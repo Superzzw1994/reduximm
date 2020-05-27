@@ -1,6 +1,23 @@
 import React from 'react';
 import withImmutable from './Hoc/withImmutable';
 import { connect } from 'react-redux';
+@connect(
+  (state) => {
+    return {
+      age: state.getIn(['init', 'age']),
+      obj: state.getIn(['init', 'obj']),
+    };
+  },
+  (dispatch) => {
+    return {
+      dispatch,
+      send: () =>
+        dispatch({
+          type: 'add',
+        }),
+    };
+  }
+)
 class App extends React.Component {
   componentDidMount() {
     const { send } = this.props;
@@ -26,20 +43,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(
-  (state) => {
-    return {
-      age: state.getIn(['init', 'age']),
-      obj: state.getIn(['init', 'obj']),
-    };
-  },
-  (dispatch) => {
-    return {
-      dispatch,
-      send: () =>
-        dispatch({
-          type: 'add',
-        }),
-    };
-  }
-)(withImmutable(App));
+export default withImmutable(App);
